@@ -34,7 +34,7 @@ def _client() -> httpx.Client:
 def get_employee(employee_id: str) -> dict:
     """Fetch one employee record from the directory by ID."""
     with _client() as client:
-        response = client.get(f"/v2/employees/{employee_id}")
+        response = client.get(f"/users/{employee_id}")
         response.raise_for_status()
         return response.json()
 
@@ -43,16 +43,16 @@ def get_employee(employee_id: str) -> dict:
 def list_team_members(team_slug: str) -> list[dict]:
     """List the members of a team in the directory."""
     with _client() as client:
-        response = client.get(f"/v2/teams/{team_slug}/members")
+        response = client.get("/users")
         response.raise_for_status()
-        return response.json()["members"]
+        return response.json()
 
 
 @tool
 def update_employee_title(employee_id: str, new_title: str) -> dict:
     """Update an employee's job title in the directory."""
     with _client() as client:
-        response = client.patch(f"/v2/employees/{employee_id}", json={"title": new_title})
+        response = client.patch(f"/users/{employee_id}", json={"title": new_title})
         response.raise_for_status()
         return response.json()
 
